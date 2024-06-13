@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bookstore_Backend.DAL.Entities;
 using Bookstore_Backend.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bookstore_Backend.Controllers
@@ -19,7 +20,8 @@ namespace Bookstore_Backend.Controllers
             _service=service;
         }
 
-        [HttpGet("GetById")]
+        [HttpGet("GetById{id}")]
+        [AllowAnonymous]
 		public IActionResult GetById(int id)
 		{
 			var result = _service.Get(id);
@@ -27,6 +29,7 @@ namespace Bookstore_Backend.Controllers
 		}
 
         [HttpGet("GetAll")]
+        [AllowAnonymous]
 		public IActionResult GetAll()
 		{
 			var result = _service.GetAll();
@@ -34,6 +37,7 @@ namespace Bookstore_Backend.Controllers
 		}
 
         [HttpPut("AddBook")]
+        [Authorize(Policy = "AdminPolicy")]
         public IActionResult AddBook(Book entity){
             
             if (entity == null){
@@ -45,6 +49,27 @@ namespace Bookstore_Backend.Controllers
             return CreatedAtAction("AddBook", new { id = entity.Name }, entity);
         }
 
-        // TODO: add delete and update endpoints
+        [HttpDelete("DeleteBook/{id}")]
+        [Authorize(Policy = "AdminPolicy")]
+        public IActionResult DeleteBook(int id){
+            
+            _service.Delete(id);
+
+            return Ok();
+        }
+
+        [HttpPut("UpdateBook")]
+        [Authorize(Policy = "AdminPolicy")]
+        public IActionResult UpdateBook(Book entity){
+            
+
+            if (entity == null){
+                return BadRequest("Book is null.");
+            }
+
+            _service.Update(entity);
+
+            return Ok();
+        }
     }
 }

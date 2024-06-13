@@ -17,5 +17,5 @@ public partial class User
 
     public string PasswordHash { get; set; } = null!;
 
-    public bool IsAdmin { get; set; }
+    public string Role { get; set; }
 }
