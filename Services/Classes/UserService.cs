@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using Bookstore_Backend.DAL.Context;
 using Bookstore_Backend.DAL.Entities;
@@ -40,6 +42,9 @@ namespace Bookstore_Backend.Services.Classes
         {
             // Created user's role is set to "user" as default
             entity.Role="user";
+
+            // Created user's password is hashed
+            entity.PasswordHash=QuickHash(entity.PasswordHash);
             _repository.Insert(entity);
 
             _context.SaveChanges();
@@ -51,5 +56,12 @@ namespace Bookstore_Backend.Services.Classes
 
             _context.SaveChanges();
         }
+        public string QuickHash(string input)
+        {
+			var inputBytes = Encoding.UTF8.GetBytes(input);
+			var inputHash = SHA256.HashData(inputBytes);
+			return Convert.ToHexString(inputHash);
+        }    
+
     }
 }

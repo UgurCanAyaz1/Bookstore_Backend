@@ -21,7 +21,7 @@ namespace Bookstore_Backend.Services.Classes
             _tokenService=tokenService;
         }
 
-		public static string QuickHash(string input)
+		public string QuickHash(string input)
 		{
 			var inputBytes = Encoding.UTF8.GetBytes(input);
 			var inputHash = SHA256.HashData(inputBytes);

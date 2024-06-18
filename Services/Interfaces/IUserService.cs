@@ -10,5 +10,7 @@ namespace Bookstore_Backend.Services.Interfaces
 {
     public interface IUserService: IGenericRepository<User>
     {
+        public string QuickHash(string input);
+
     }
 }
