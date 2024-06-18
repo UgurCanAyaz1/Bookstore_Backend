@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using Bookstore_Backend.DAL.Entities;
 using Bookstore_Backend.Models;
@@ -19,14 +21,28 @@ namespace Bookstore_Backend.Services.Classes
             _tokenService=tokenService;
         }
 
+		public static string QuickHash(string input)
+		{
+			var inputBytes = Encoding.UTF8.GetBytes(input);
+			var inputHash = SHA256.HashData(inputBytes);
+			return Convert.ToHexString(inputHash);
+		}
+
 
 
         private bool ValidatePassword(string password, string storedHash)
         {
-            // Implement your password hash validation logic here
-            // For example, using BCrypt:
-            // return BCrypt.Net.BCrypt.Verify(password, storedHash);
-            return password == storedHash; // Replace with actual hash comparison
+            string hashedPassword = QuickHash(password);
+            bool comparison;
+            if (hashedPassword == storedHash){
+                comparison = true;
+            }
+            else
+            {
+                comparison = false;
+            }
+
+            return comparison;
         }
 
         public UserLoginResponse LoginUser(UserLoginRequest request)
@@ -61,7 +77,7 @@ namespace Bookstore_Backend.Services.Classes
                 };
             }
 
-            if (request.Username==user.UserName && request.Password==user.PasswordHash)
+            if (request.Username==user.UserName && QuickHash(request.Password)==user.PasswordHash)
             {
                 var generateTokenResult = _tokenService.GenerateToken(new GenerateTokenRequest { Username = request.Username }, user);
                 response = new UserLoginResponse

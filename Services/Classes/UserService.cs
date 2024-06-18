@@ -38,6 +38,8 @@ namespace Bookstore_Backend.Services.Classes
 
         public void Insert(User entity)
         {
+            // Created user's role is set to "user" as default
+            entity.Role="user";
             _repository.Insert(entity);
 
             _context.SaveChanges();

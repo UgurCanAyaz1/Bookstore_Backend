@@ -51,7 +51,7 @@ public partial class BookstoreContext : DbContext
             entity.Property(e => e.EmailAddress).HasMaxLength(50);
             entity.Property(e => e.FirstName).HasMaxLength(50);
             entity.Property(e => e.LastName).HasMaxLength(50);
-            entity.Property(e => e.PasswordHash).HasMaxLength(50);
+            entity.Property(e => e.PasswordHash).HasMaxLength(500);
             entity.Property(e => e.UserName).HasMaxLength(50);
             entity.Property(e => e.Role).HasMaxLength(50);
         });

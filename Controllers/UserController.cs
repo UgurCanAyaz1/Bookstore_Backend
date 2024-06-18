@@ -47,7 +47,6 @@ namespace Bookstore_Backend.Controllers
             if (entity == null){
                 return BadRequest("User is null.");
             }
-
             _service.Insert(entity);
 
             return CreatedAtAction("AddUser", new { id = entity.FirstName }, entity);
