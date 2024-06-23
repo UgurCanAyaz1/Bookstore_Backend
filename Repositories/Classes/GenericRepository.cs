@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Bookstore_Backend.DAL;
+using Microsoft.EntityFrameworkCore;
 using Bookstore_Backend.DAL.Context;
 using Bookstore_Backend.Repositories.Interfaces;
 
@@ -10,37 +10,40 @@ namespace Bookstore_Backend.Repository.Classes
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
-        private BookstoreContext _context;
+        private readonly BookstoreContext _context;
 
         public GenericRepository(BookstoreContext context)
         {
-            _context=context;
-        }
-        public void Delete(int id)
-        {
-            _context.Remove<TEntity>(Get(id));
-			// _context.SaveChanges();
+            _context = context;
         }
 
-        public TEntity Get(int id)
+        public async Task DeleteAsync(int id)
         {
-            return _context.Set<TEntity>().Find(id);
+            var entity = await GetAsync(id);
+            if (entity != null)
+            {
+                _context.Remove(entity);
+                await _context.SaveChangesAsync();
+            }
+        }
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        {
+            return await _context.Set<TEntity>().ToListAsync();
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public async Task<TEntity> GetAsync(int id)
         {
-            return _context.Set<TEntity>();
+            return await _context.Set<TEntity>().FindAsync(id);
         }
 
-        public void Insert(TEntity entity)
+        public async Task InsertAsync(TEntity entity)
         {
-            _context.Add<TEntity>(entity);
-			// _context.SaveChanges();
+            await _context.AddAsync(entity);
         }
-        public void Update(TEntity entity)
+
+        public async Task UpdateAsync(TEntity entity)
         {
-            _context.Update<TEntity>(entity);
-			// _context.SaveChanges();
+            _context.Update(entity);
         }
     }
 }

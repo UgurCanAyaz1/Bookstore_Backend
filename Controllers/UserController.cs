@@ -25,62 +25,62 @@ namespace Bookstore_Backend.Controllers
 
 		[HttpGet("GetById/{id}")]
         [AllowAnonymous]
-		public IActionResult GetById(int id)
+		public async Task<IActionResult> GetById(int id)
 		{
-			var result = _service.Get(id);
+			var result = await _service.GetAsync(id);
 			return Ok(result);
 		}
 
         [HttpGet("GetAll")]
         [AllowAnonymous]
-		public IActionResult GetAll()
+		public async Task<IActionResult> GetAll()
 		{
-			var result = _service.GetAll();
+			var result = _service.GetAllAsync();
 			return Ok(result);
 		}
 
 
         [HttpPut("AddUser")]
         [AllowAnonymous]
-        public IActionResult AddUser(User entity){
+        public async Task<IActionResult> AddUser(User entity){
             
             if (entity == null){
                 return BadRequest("User is null.");
             }
-            _service.Insert(entity);
+            await _service.InsertAsync(entity);
 
             return CreatedAtAction("AddUser", new { id = entity.FirstName }, entity);
         }
 
         [HttpDelete("DeleteUser/{id}")]
         [Authorize(Policy = "AdminPolicy")]
-        public IActionResult DeleteUser(int id){
+        public async Task<IActionResult> DeleteUser(int id){
             
-            _service.Delete(id);
+            await _service.DeleteAsync(id);
 
             return Ok();
         }
 
         [HttpPut("UpdateUser")]
         [Authorize]
-        public IActionResult UpdateUser(User entity){
+        public async Task<IActionResult> UpdateUser(User entity){
             
 
             if (entity == null){
                 return BadRequest("Book is null.");
             }
 
-            _service.Update(entity);
+            await _service.UpdateAsync(entity);
 
             return Ok();
         }
 
         [HttpPost("LoginUser")]
         [AllowAnonymous]
-        public IActionResult LoginUser(UserLoginRequest request){
+        public async Task<IActionResult> LoginUser(UserLoginRequest request){
             
 
-            var result = _authService.LoginUser(request);
+            var result = await _authService.LoginUser(request);
 
             if(result.AuthenticateResult){
                 return Ok(result);

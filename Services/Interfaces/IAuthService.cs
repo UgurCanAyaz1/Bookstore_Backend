@@ -8,7 +8,7 @@ namespace Bookstore_Backend.Services.Interfaces
 {
     public interface IAuthService
     {
-        public UserLoginResponse LoginUser(UserLoginRequest request);
+        public Task<UserLoginResponse> LoginUser(UserLoginRequest request);
 
         public string QuickHash(string input);
     }

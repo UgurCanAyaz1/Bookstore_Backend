@@ -9,6 +9,6 @@ namespace Bookstore_Backend.Services.Interfaces
 {
     public interface ITokenService
     {
-        public GenerateTokenResponse GenerateToken(GenerateTokenRequest request, User user);
+        public Task<GenerateTokenResponse> GenerateToken(GenerateTokenRequest request, User user);
     }
 }

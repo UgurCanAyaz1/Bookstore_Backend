@@ -21,40 +21,41 @@ namespace Bookstore_Backend.Services.Classes
             _repository = repository;
             _context = context;
         }
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            _repository.Delete(id);
+            await _repository.DeleteAsync(id);
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public User Get(int id)
+        public async  Task<User> GetAsync(int id)
         {
-            return _repository.Get(id);
+            return await _repository.GetAsync(id);
+
         }
 
-        public IEnumerable<User> GetAll()
+        public async Task<IEnumerable<User>> GetAllAsync()
         {
-            return _repository.GetAll();
+            return await _repository.GetAllAsync();
         }
 
-        public void Insert(User entity)
+        public async Task InsertAsync(User entity)
         {
             // Created user's role is set to "user" as default
             entity.Role="user";
 
             // Created user's password is hashed
             entity.PasswordHash=QuickHash(entity.PasswordHash);
-            _repository.Insert(entity);
+            await _repository.InsertAsync(entity);
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Update(User entity)
+        public async Task UpdateAsync(User entity)
         {
-            _repository.Update(entity);
+            await _repository.UpdateAsync(entity);
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
         public string QuickHash(string input)
         {

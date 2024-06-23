@@ -45,7 +45,7 @@ namespace Bookstore_Backend.Services.Classes
             return comparison;
         }
 
-        public UserLoginResponse LoginUser(UserLoginRequest request)
+        public async Task<UserLoginResponse> LoginUser(UserLoginRequest request)
         {
             UserLoginResponse response = new();
 
@@ -54,7 +54,9 @@ namespace Bookstore_Backend.Services.Classes
                 throw new ArgumentNullException(nameof(request), "Username or password is null or empty.");
             }
 
-            var user = _userService.GetAll().FirstOrDefault(u => u.UserName == request.Username);
+            var users = await _userService.GetAllAsync();
+
+            var user = users.FirstOrDefault(u => u.UserName == request.Username);
 
             if (user == null){
 
@@ -79,7 +81,7 @@ namespace Bookstore_Backend.Services.Classes
 
             if (request.Username==user.UserName && QuickHash(request.Password)==user.PasswordHash)
             {
-                var generateTokenResult = _tokenService.GenerateToken(new GenerateTokenRequest { Username = request.Username }, user);
+                var generateTokenResult = await _tokenService.GenerateToken(new GenerateTokenRequest { Username = request.Username }, user);
                 response = new UserLoginResponse
                 {
                     AuthToken = generateTokenResult.Token,

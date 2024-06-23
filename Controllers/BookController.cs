@@ -22,52 +22,52 @@ namespace Bookstore_Backend.Controllers
 
         [HttpGet("GetById{id}")]
         [AllowAnonymous]
-		public IActionResult GetById(int id)
+		public async Task<IActionResult> GetById(int id)
 		{
-			var result = _service.Get(id);
+			var result = await _service.GetAsync(id);
 			return Ok(result);
 		}
 
         [HttpGet("GetAll")]
         [AllowAnonymous]
-		public IActionResult GetAll()
+		public async Task<IActionResult> GetAll()
 		{
-			var result = _service.GetAll();
+			var result = await _service.GetAllAsync();
 			return Ok(result);
 		}
 
         [HttpPut("AddBook")]
         [Authorize(Policy = "AdminPolicy")]
-        public IActionResult AddBook(Book entity){
+        public async Task<IActionResult> AddBook(Book entity){
             
             if (entity == null){
                 return BadRequest("Book is null.");
             }
 
-            _service.Insert(entity);
+            await _service.InsertAsync(entity);
 
             return CreatedAtAction("AddBook", new { id = entity.Name }, entity);
         }
 
         [HttpDelete("DeleteBook/{id}")]
         [Authorize(Policy = "AdminPolicy")]
-        public IActionResult DeleteBook(int id){
+        public async Task<IActionResult> DeleteBook(int id){
             
-            _service.Delete(id);
+            await _service.DeleteAsync(id);
 
             return Ok();
         }
 
         [HttpPut("UpdateBook")]
         [Authorize(Policy = "AdminPolicy")]
-        public IActionResult UpdateBook(Book entity){
+        public async Task<IActionResult> UpdateBook(Book entity){
             
 
             if (entity == null){
                 return BadRequest("Book is null.");
             }
 
-            _service.Update(entity);
+            await _service.UpdateAsync(entity);
 
             return Ok();
         }

@@ -22,7 +22,7 @@ namespace Bookstore_Backend.Services.Classes
             this.configuration = configuration;
         }
 
-        public GenerateTokenResponse GenerateToken(GenerateTokenRequest request, User user)
+        public async Task<GenerateTokenResponse> GenerateToken(GenerateTokenRequest request, User user)
         {
             SymmetricSecurityKey symmetricSecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["AppSettings:Secret"]));
 

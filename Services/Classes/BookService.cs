@@ -19,35 +19,35 @@ namespace Bookstore_Backend.Services.Classes
             _repository = repository;
             _context = context;
         }
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            _repository.Delete(id);
+            await _repository.DeleteAsync(id);
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public Book Get(int id)
+        public async Task<Book> GetAsync(int id)
         {
-            return _repository.Get(id);
+            return await _repository.GetAsync(id);
         }
 
-        public IEnumerable<Book> GetAll()
+        public async Task<IEnumerable<Book>> GetAllAsync()
         {
-            return _repository.GetAll();
+            return await _repository.GetAllAsync();
         }
 
-        public void Insert(Book entity)
+        public async Task InsertAsync(Book entity)
         {
-            _repository.Insert(entity);
+            await _repository.InsertAsync(entity);
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Update(Book entity)
+        public async Task UpdateAsync(Book entity)
         {
-            _repository.Update(entity);
+            await _repository.UpdateAsync(entity);
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }
