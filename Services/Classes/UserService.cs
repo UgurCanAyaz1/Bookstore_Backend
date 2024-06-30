@@ -42,7 +42,12 @@ namespace Bookstore_Backend.Services.Classes
         public async Task InsertAsync(User entity)
         {
             // Created user's role is set to "user" as default
-            entity.Role="user";
+            if (entity.Role=="admin"){
+                entity.Role="admin";
+            }
+            else{
+                entity.Role="user";
+            }
 
             // Created user's password is hashed
             entity.PasswordHash=QuickHash(entity.PasswordHash);

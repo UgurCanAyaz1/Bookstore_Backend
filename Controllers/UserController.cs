@@ -35,7 +35,7 @@ namespace Bookstore_Backend.Controllers
         [AllowAnonymous]
 		public async Task<IActionResult> GetAll()
 		{
-			var result = _service.GetAllAsync();
+			var result = await _service.GetAllAsync();
 			return Ok(result);
 		}
 
