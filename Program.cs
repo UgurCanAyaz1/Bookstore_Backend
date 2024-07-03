@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 using Bookstore_Backend.DAL;
 using Bookstore_Backend.DAL.Context;
 using Bookstore_Backend.DAL.Entities;
+using Bookstore_Backend.Models;
 using Bookstore_Backend.Repositories.Classes;
 using Bookstore_Backend.Repositories.Interfaces;
 using Bookstore_Backend.Services.Classes;
@@ -81,6 +82,8 @@ builder.Services.AddScoped(typeof(BookstoreContext));
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 
+builder.Services.AddSingleton<StripeService>();
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -108,6 +111,8 @@ builder.Services.AddAuthorization(options =>
             context.User.HasClaim(c => c.Type == "Role" && c.Value == "admin"));
     });
 });
+
+builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
 
 var app = builder.Build();
 
